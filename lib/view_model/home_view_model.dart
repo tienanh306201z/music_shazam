@@ -1,18 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/models/playlist.dart';
 
-import '../models/song.dart';
-import '../repository/song_repository.dart';
+import '../models/track.dart';
+import '../repository/track_repository.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  final songRepo = SongRepository();
-  List<Song> songs = [];
+  final trackRepo = TrackRepository();
+  List<Track> tracks = [];
+  List<ThePlaylist> playlists = [];
 
   getAllSongs() async {
     print("GET SONG");
-    QuerySnapshot querySnapshot = await songRepo.getAllSongs();
+    QuerySnapshot querySnapshot = await trackRepo.getAllSongs();
     // Get data from docs and convert map to List
-    songs = querySnapshot.docs.map((doc) => Song.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    tracks = querySnapshot.docs.map((doc) => Track.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    notifyListeners();
+  }
+
+  getAllPlaylist() async {
+    print("GET PLAYLIST");
+    QuerySnapshot querySnapshot = await trackRepo.getAllPlaylist();
+    querySnapshot.docs.forEach((doc) async {
+      var tmp = ThePlaylist.fromMap(doc.data() as Map<String, dynamic>);
+      if (tmp.imageURL == null || tmp.imageURL!.isEmpty) {
+        var firstTrack = await TrackRepository().getTrackById(tmp.listTrackId[0]);
+        tmp.imageURL = firstTrack.imageURL;
+        print(firstTrack.imageURL);
+      }
+      playlists.add(tmp);
+      notifyListeners();
+    });
+    print(playlists.length);
     notifyListeners();
   }
 }

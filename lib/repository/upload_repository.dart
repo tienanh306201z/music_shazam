@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../models/song.dart';
+import '../models/track.dart';
 
 class UploadRepository {
 
@@ -74,7 +74,7 @@ class UploadRepository {
   storeSong(String id, File imageFile, String imageName, File songFile, String songName, String name, String artistName) async {
     String imageUrl = await uploadImage(id, imageFile, imageName);
     String songUrl = await uploadSong(id, songFile, songName);
-    var song = Song.fromMap({
+    var song = Track.fromMap({
       'id': id,
       'name': name,
       'artistName': artistName,

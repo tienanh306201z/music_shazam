@@ -5,7 +5,8 @@ import 'package:music_app/utils/extension.dart';
 import 'package:music_app/view/home/home_screen.dart';
 import 'package:music_app/view/upload/upload_screen.dart';
 import 'package:music_app/view_model/home_view_model.dart';
-import 'package:music_app/view_model/song_view_model.dart';
+import 'package:music_app/view_model/track_view_model.dart';
+import 'package:music_app/view_model/track_view_model.dart';
 import 'package:music_app/view_model/upload_view_model.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UploadViewModel()),
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
-        ChangeNotifierProvider(create: (_) => SongViewModel()),
+        ChangeNotifierProvider(create: (_) => TrackViewModel()),
+        ChangeNotifierProvider(create: (_) => TrackViewModel()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -56,6 +58,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _controller = PersistentTabController(initialIndex: 0);
     Provider.of<HomeViewModel>(context, listen: false).getAllSongs();
+    Provider.of<HomeViewModel>(context, listen: false).getAllPlaylist();
   }
 
   List<Widget> _buildScreens() {

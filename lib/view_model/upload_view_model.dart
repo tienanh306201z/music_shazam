@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/song.dart';
+import '../models/track.dart';
 import '../repository/upload_repository.dart';
 
 class UploadViewModel extends ChangeNotifier {
