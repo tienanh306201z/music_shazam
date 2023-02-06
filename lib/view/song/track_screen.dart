@@ -2,17 +2,22 @@ import 'dart:ui';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/models/playlist.dart';
 import 'package:music_app/models/track.dart';
 import 'package:music_app/repository/track_repository.dart';
+import 'package:music_app/utils/constants.dart';
 import 'package:music_app/utils/extension.dart';
 import 'package:provider/provider.dart';
 
 import '../../view_model/track_view_model.dart';
 
 class TrackScreen extends StatefulWidget {
-  final Track track;
+  Track? track;
+  ThePlaylist? playlist;
+  bool isPlaylist;
+  List<Track>? tracks;
 
-  const TrackScreen({Key? key, required this.track}) : super(key: key);
+  TrackScreen({Key? key, this.track, this.playlist, this.tracks, this.isPlaylist = false}) : super(key: key);
 
   @override
   State<TrackScreen> createState() => _TrackScreenState();
@@ -32,8 +37,13 @@ class _TrackScreenState extends State<TrackScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<TrackViewModel>(context, listen: false)
-        .init(widget.track.mp3Link);
+    if (!widget.isPlaylist) {
+      Provider.of<TrackViewModel>(context, listen: false)
+          .init(widget.track!.mp3Link);
+    } else {
+      Provider.of<TrackViewModel>(context, listen: false)
+          .initPlaylist(widget.tracks!);
+    }
   }
 
   // Initializing the Music Player and adding a single [PlaylistItem]
@@ -68,7 +78,7 @@ class _TrackScreenState extends State<TrackScreen> {
             constraints: const BoxConstraints.expand(),
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: NetworkImage(widget.track.imageURL),
+              image: NetworkImage(widget.track?.imageURL ?? widget.playlist!.imageURL!),
               fit: BoxFit.cover,
             )),
             child: BackdropFilter(
@@ -87,7 +97,7 @@ class _TrackScreenState extends State<TrackScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
                   child: Image.network(
-                    widget.track.imageURL,
+                    widget.track?.imageURL ?? widget.playlist!.imageURL!,
                     width: 250.0,
                     height: 250.0,
                     fit: BoxFit.cover,
@@ -106,7 +116,7 @@ class _TrackScreenState extends State<TrackScreen> {
                         SizedBox(
                           width: 300,
                           child: Text(
-                            widget.track.name,
+                            widget.track?.name ?? widget.playlist!.name,
                             style: TextStyle(
                               fontSize: 24,
                               color: "#FFFFFF".toColor(),
@@ -115,8 +125,8 @@ class _TrackScreenState extends State<TrackScreen> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        FutureBuilder(
-                          future: TrackRepository().getArtistById(widget.track.artistId),
+                        widget.track != null ? FutureBuilder(
+                          future: TrackRepository().getArtistById(widget.track!.artistId),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return Text(
@@ -128,7 +138,7 @@ class _TrackScreenState extends State<TrackScreen> {
                               return SizedBox();
                             }
                           },
-                        ),
+                        ) : SizedBox(),
                       ],
                     ),
                     Image.asset(
@@ -166,16 +176,20 @@ class _TrackScreenState extends State<TrackScreen> {
                             MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  model.onShuffleButtonPressed();
+                                },
                                 child: Image.asset(
-                                  "assets/icon/u_arrow-random.png",
-                                  width: 24,
+                                  shuffleImage(model),
+                                  width: 28,
                                 ),
                               ),
                               Row(
                                 children: [
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      model.onPreviousSongButtonPressed();
+                                    },
                                     child: Image.asset(
                                       "assets/icon/previous.png",
                                       width: 24,
@@ -198,7 +212,9 @@ class _TrackScreenState extends State<TrackScreen> {
                                     width: 32,
                                   ),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      model.onNextSongButtonPressed();
+                                    },
                                     child: Image.asset(
                                       "assets/icon/next.png",
                                       width: 24,
@@ -207,11 +223,10 @@ class _TrackScreenState extends State<TrackScreen> {
                                 ],
                               ),
                               InkWell(
-                                onTap: () {},
-                                child: Image.asset(
-                                  "assets/icon/fi_refresh-cw.png",
-                                  width: 24,
-                                ),
+                                onTap: () {
+                                  model.onRepeatButtonPressed();
+                                },
+                                child: loopImage(model),
                               ),
                             ],
                           ),
@@ -226,5 +241,42 @@ class _TrackScreenState extends State<TrackScreen> {
         ],
       ),
     );
+  }
+
+  String shuffleImage(TrackViewModel model) {
+    if (model.isShuffle) {
+      return "assets/icon/shuffle_color.png";
+    } else {
+      return "assets/icon/shuffle.png";
+    }
+  }
+
+  Widget loopImage(TrackViewModel model) {
+    switch (model.repeatState) {
+      case RepeatState.off:
+        return Image.asset(
+          "assets/icon/repeat.png",
+          width: 32,
+        );
+      case RepeatState.repeatPlaylist:
+        return Image.asset(
+          "assets/icon/repeat_color.png",
+          width: 32,
+        );
+      case RepeatState.repeatSong:
+        return Stack(
+          children: [
+            Image.asset(
+              "assets/icon/repeat_color.png",
+              width: 32,
+            ),
+            Positioned(
+              top: 10,
+              left: 13,
+              child: Text('1', style: TextStyle(color: AppColors().purple, fontWeight: FontWeight.bold, fontSize: 10),),
+            ),
+          ],
+        );
+    }
   }
 }

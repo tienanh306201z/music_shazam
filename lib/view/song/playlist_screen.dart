@@ -69,7 +69,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                           left: 12,
                           child: InkWell(
                             onTap: () {
-
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => TrackScreen(playlist: widget.playlist, tracks: listTrack, isPlaylist: true)));
                             },
                             child: Container(
                               width: 16,
