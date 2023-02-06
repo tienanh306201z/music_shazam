@@ -54,26 +54,26 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       style: const TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    Stack(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: const BoxDecoration(
-                            color: Colors.blueAccent,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => TrackScreen(playlist: widget.playlist, tracks: listTrack, isPlaylist: true)));
+                      },
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: const BoxDecoration(
+                              color: Colors.blueAccent,
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
                           ),
-                        ),
-                        Positioned(
-                          top: 12,
-                          left: 12,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => TrackScreen(playlist: widget.playlist, tracks: listTrack, isPlaylist: true)));
-                            },
+                          Positioned(
+                            top: 12,
+                            left: 12,
                             child: Container(
                               width: 16,
                               height: 16,
@@ -83,10 +83,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   fit: BoxFit.cover,
                                 )
                               ),
-                            ),
-                          )
-                        ),
-                      ],
+                            )
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
