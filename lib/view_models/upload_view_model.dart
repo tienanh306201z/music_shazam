@@ -4,7 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../repositories/upload_repository.dart';
+import '../repositories/global_repo.dart';
+import '../repositories/upload_repo.dart';
 class UploadViewModel extends ChangeNotifier {
   File? imageFile;
   File? songFile;
@@ -15,7 +16,7 @@ class UploadViewModel extends ChangeNotifier {
   String? _extension;
   bool _multiPick = false;
   
-  final uploadRepo = UploadRepository();
+  final globalRepo = GlobalRepo.getInstance;
 
   selectImage() async {
     _pathsImage = (await FilePicker.platform.pickFiles(
@@ -48,13 +49,13 @@ class UploadViewModel extends ChangeNotifier {
     }
   }
 
-  storeSong(String name, String artistName) async {
-    isLoading = true;
-    notifyListeners();
-    var uuid = const Uuid();
-    var v1 = uuid.v1();
-    await uploadRepo.storeSong(v1, imageFile!, _pathsImage![0].name, songFile!, _pathsSong![0].name, name, artistName);
-    isLoading = false;
-    notifyListeners();
-  }
+  // storeSong(String name, String artistName) async {
+  //   isLoading = true;
+  //   notifyListeners();
+  //   var uuid = const Uuid();
+  //   var v1 = uuid.v1();
+  //   await globalRepo.storeSong(v1, imageFile!, _pathsImage![0].name, songFile!, _pathsSong![0].name, name, artistName);
+  //   isLoading = false;
+  //   notifyListeners();
+  // }
 }

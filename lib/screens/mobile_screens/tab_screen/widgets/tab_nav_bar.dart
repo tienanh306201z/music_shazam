@@ -19,7 +19,7 @@ class _TabNavBarState extends State<TabNavBar> {
     NavBarModel("Search", Icons.search),
     NavBarModel("Recognition", FontAwesomeIcons.deezer),
     NavBarModel("Your track", Icons.playlist_play_rounded),
-    NavBarModel("Profile", Icons.person),
+    NavBarModel("Library", Icons.stacked_bar_chart_outlined),
   ];
 
   @override

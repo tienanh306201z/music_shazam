@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/screens/mobile_screens/tab_screen/tabs/library_tab/library_tab.dart';
+import 'package:music_app/view_models/playlist_view_model.dart';
+import 'package:music_app/view_models/track_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/constants/asset_paths.dart';
+import '../../../view_models/user_view_model.dart';
 import 'tabs/home_tab/home_tab.dart';
-import 'tabs/profile_tab/profile_tab.dart';
 import 'tabs/search_tab/search_tab.dart';
 import 'tabs/song_recognition_tab/song_recognition_tab.dart';
 import 'tabs/your_track_tab/your_track_tab.dart';
@@ -23,8 +27,17 @@ class _TabScreenState extends State<TabScreen> {
     const SearchTab(),
     const SongRecognitionTab(),
     const YourTrackTab(),
-    const ProfileTab(),
+    const LibraryTab(),
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<TrackViewModel>(context, listen: false).getAllTracks();
+    Provider.of<PlaylistViewModel>(context, listen: false).getAllPlaylist();
+    Provider.of<UserViewModel>(context, listen: false).init();
+  }
 
   @override
   Widget build(BuildContext context) {

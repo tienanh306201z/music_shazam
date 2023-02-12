@@ -68,43 +68,44 @@ class _SearchTabState extends State<SearchTab> {
   }
 
   Widget _searchListSection() {
-    return ListView.separated(
-      itemBuilder: (_, index) => CustomTrackItem(
-          trailingWidget: PopupMenuButton(
-        offset: const Offset(0, 50),
-        padding: EdgeInsets.zero,
-        icon: Icon(
-          Icons.more_vert,
-          color: AppColor.onPrimaryColor.withOpacity(0.6),
-          size: 28,
-        ),
-        itemBuilder: (ctx) => [
-          PopupMenuItem(
-            child: Row(
-              children: const [
-                Icon(
-                  Icons.key_rounded,
-                  color: Colors.grey,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Text(
-                  "Change Password",
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-        ],
-      )),
-      itemCount: 10,
-      separatorBuilder: (_, index) => const SizedBox(
-        height: 16.0,
-      ),
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-    );
+    return SizedBox();
+    // return ListView.separated(
+    //   itemBuilder: (_, index) => CustomTrackItem(
+    //       trailingWidget: PopupMenuButton(
+    //     offset: const Offset(0, 50),
+    //     padding: EdgeInsets.zero,
+    //     icon: Icon(
+    //       Icons.more_vert,
+    //       color: AppColor.onPrimaryColor.withOpacity(0.6),
+    //       size: 28,
+    //     ),
+    //     itemBuilder: (ctx) => [
+    //       PopupMenuItem(
+    //         child: Row(
+    //           children: const [
+    //             Icon(
+    //               Icons.key_rounded,
+    //               color: Colors.grey,
+    //             ),
+    //             SizedBox(
+    //               width: 10.0,
+    //             ),
+    //             Text(
+    //               "Change Password",
+    //               style: TextStyle(color: Colors.grey),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     ],
+    //   )),
+    //   itemCount: 10,
+    //   separatorBuilder: (_, index) => const SizedBox(
+    //     height: 16.0,
+    //   ),
+    //   shrinkWrap: true,
+    //   physics: const NeverScrollableScrollPhysics(),
+    // );
   }
 
   @override

@@ -1,46 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:music_app/utils/constants/app_string.dart';
 
-class Playlist {
+class AppPlaylist {
   late String id;
   late String name;
   late String userId;
   String? imageURL;
-  late List<dynamic> listTrackId;
-  late int listeningCount;
+  late List<dynamic> tracksIdList;
+  late int listenedCount;
   late bool isPublic;
   late Timestamp lastUpdate;
 
-  Playlist({
+  AppPlaylist({
     required this.id,
     required this.name,
     required this.userId,
-    this.listTrackId = const [],
-    this.listeningCount = 0,
+    this.tracksIdList = const [],
+    this.listenedCount = 0,
     this.isPublic = true,
     required this.lastUpdate,
   });
 
-  Playlist.fromMap(Map<String, dynamic> map) {
-    id = map['id'];
-    name = map['name'];
-    userId = map['userId'];
-    imageURL = map['imageURL'];
-    listTrackId = map['listTrackId'];
-    listeningCount = map['listeningCount'];
-    isPublic = map['isPublic'];
-    lastUpdate = map['lastUpdate'];
+  AppPlaylist.fromMap(Map<String, dynamic> map) {
+    id = map[AppString.id];
+    name = map[AppString.name];
+    userId = map[AppString.userId];
+    imageURL = map[AppString.imageURL];
+    tracksIdList = map[AppString.tracksIdList];
+    listenedCount = map[AppString.listenedCount] ?? 0;
+    isPublic = map[AppString.isPublic];
+    lastUpdate = map[AppString.lastUpdate];
   }
 
   Map<String, dynamic> toMap() {
     var map = {
-      "id": id,
-      "name": name,
-      "userId": userId,
-      "imageURL": imageURL,
-      "listTrackId": listTrackId,
-      "listeningCount": listeningCount,
-      "isPublic": isPublic,
-      "lastUpdate": lastUpdate,
+      AppString.id: id,
+      AppString.name: name,
+      AppString.userId: userId,
+      AppString.imageURL: imageURL,
+      AppString.tracksIdList: tracksIdList,
+      AppString.listenedCount: listenedCount,
+      AppString.isPublic: isPublic,
+      AppString.lastUpdate: lastUpdate,
     };
     return map;
   }

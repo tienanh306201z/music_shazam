@@ -5,14 +5,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../models/db_models/track.dart';
 
-class UploadRepository {
-
-  final ref = FirebaseStorage.instance.ref();
-  final firestore = FirebaseFirestore.instance;
+class UploadRepo {
+  final FirebaseStorage storage;
+  final FirebaseFirestore firestore;
+  UploadRepo({required this.storage, required this.firestore});
 
   uploadImage(String id, File imageFile, String imageName) async {
     final pathImage = "images/$id/$imageName";
-    final childRef = ref.child(pathImage);
+    final childRef = storage.ref().child(pathImage);
     final metadata = SettableMetadata(contentType: "image/jpeg");
     final snapshot = await childRef.putFile(imageFile, metadata);
     return snapshot.ref.getDownloadURL();
@@ -20,7 +20,7 @@ class UploadRepository {
 
   uploadSong(String id, File songFile, String songName) async {
     final pathSong = "songs/$id/$songName";
-    final childRef = ref.child(pathSong);
+    final childRef = storage.ref().child(pathSong);
     final snapshot = await childRef.putFile(songFile);
     return snapshot.ref.getDownloadURL();
   }

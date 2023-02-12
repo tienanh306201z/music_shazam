@@ -1,31 +1,33 @@
+import 'package:music_app/utils/constants/app_string.dart';
+
 class Artist {
   late String id;
   late String name;
   late String? biography;
   late String? description;
-  late List<dynamic> listTrackId;
+  late List<dynamic> tracksIdList;
 
   Artist({
     required this.id,
     required this.name,
-    this.listTrackId = const [],
+    this.tracksIdList = const [],
   });
 
   Artist.fromMap(Map<String, dynamic> map) {
-    id = map['id'];
-    name = map['name'];
-    biography = map['biography'];
-    description = map['description'];
-    listTrackId = map['listTrackId'];
+    id = map[AppString.id];
+    name = map[AppString.name];
+    biography = map[AppString.biography];
+    description = map[AppString.description];
+    tracksIdList = map[AppString.tracksIdList];
   }
 
   Map<String, dynamic> toMap() {
     var map = {
-      'id': id,
-      'name': name,
-      'biography': biography,
-      'description': description,
-      'listTrackId': listTrackId,
+      AppString.id: id,
+      AppString.name: name,
+      AppString.biography: biography,
+      AppString.description: description,
+      AppString.tracksIdList: tracksIdList,
     };
     return map;
   }

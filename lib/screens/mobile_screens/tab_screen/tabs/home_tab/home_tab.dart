@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:music_app/screens/mobile_screens/tab_screen/tabs/home_tab/widgets/home_header.dart';
 import 'package:music_app/screens/mobile_screens/tab_screen/tabs/home_tab/widgets/home_playlist_list.dart';
 import 'package:music_app/utils/constants/app_colors.dart';
+import 'package:music_app/view_models/track_view_model.dart';
 import 'package:music_app/widgets/custom_track_item.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../widgets/custom_search_bar.dart';
 
@@ -70,23 +72,26 @@ class HomeTab extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ListView.separated(
-                itemBuilder: (_, index) => const CustomTrackItem(
-                  trailingWidget: Text(
-                    "3:30",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      height: 21.0 / 16.0,
-                      color: AppColor.onPrimaryColor,
+              child: Consumer<TrackViewModel>(
+                builder: (context, model, child) {
+                  var tracks = model.tracks;
+                  return ListView.separated(
+                    itemBuilder: (_, index) => CustomTrackItem(track: tracks[index], trailingWidget: Text(
+                      "3:30",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        height: 21.0 / 16.0,
+                        color: AppColor.onPrimaryColor,
+                      ),
+                    ),),
+                    itemCount: tracks.length,
+                    separatorBuilder: (_, index) => const SizedBox(
+                      height: 16.0,
                     ),
-                  ),
-                ),
-                itemCount: 10,
-                separatorBuilder: (_, index) => const SizedBox(
-                  height: 16.0,
-                ),
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                  );
+                },
               ),
             )
           ],

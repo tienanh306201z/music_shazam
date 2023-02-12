@@ -64,7 +64,7 @@ class _UploadScreenState extends State<UploadScreen> {
                   model.isLoading ? CircularProgressIndicator() : SizedBox(),
                   ElevatedButton(
                     onPressed: () async {
-                      await model.storeSong(songController.text, artistController.text);
+                      // await model.storeSong(songController.text, artistController.text);
                     },
                     child: const Text('Submit'),
                   ),
