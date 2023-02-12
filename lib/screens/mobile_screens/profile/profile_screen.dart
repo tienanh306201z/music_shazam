@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:music_app/utils/constants/app_colors.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../utils/app_flushbar.dart';
-import '../../../../../utils/constants/asset_paths.dart';
-import '../../../../../view_models/user_view_model.dart';
-import '../../../../../widgets/cached_image_widget.dart';
-import '../../../../../widgets/general_header.dart';
+import '../../../utils/app_flushbar.dart';
+import '../../../utils/constants/asset_paths.dart';
+import '../../../view_models/user_view_model.dart';
+import '../../../widgets/cached_image_widget.dart';
+import '../../../widgets/general_header.dart';
 import 'edit_profile_screen.dart';
 
 

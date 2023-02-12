@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/screens/mobile_screens/tab_screen/tabs/library_tab/profile_screen.dart';
+import 'package:music_app/screens/mobile_screens/profile/profile_screen.dart';
 import 'package:music_app/screens/mobile_screens/tab_screen/tabs/library_tab/widgets/library_header.dart';
 import 'package:music_app/utils/constants/asset_paths.dart';
 import 'package:provider/provider.dart';

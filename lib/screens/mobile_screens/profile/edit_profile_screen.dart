@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../models/db_models/app_user.dart';
-import '../../../../../utils/constants/app_colors.dart';
-import '../../../../../utils/constants/asset_paths.dart';
-import '../../../../../view_models/profile_view_model.dart';
-import '../../../../../view_models/user_view_model.dart';
-import '../../../../../widgets/cached_image_widget.dart';
-import '../../../../../widgets/general_header.dart';
+import '../../../models/db_models/app_user.dart';
+import '../../../utils/constants/app_colors.dart';
+import '../../../utils/constants/asset_paths.dart';
+import '../../../view_models/profile_view_model.dart';
+import '../../../view_models/user_view_model.dart';
+import '../../../widgets/cached_image_widget.dart';
+import '../../../widgets/general_header.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final AppUser user;
