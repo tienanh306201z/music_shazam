@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/repositories/global_repo.dart';
-import 'package:music_app/screens/mobile_screens/play/play_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:music_app/models/db_models/artist.dart';
+import 'package:music_app/navigations/app_nav_host.dart';
 
 import '../models/db_models/track.dart';
-import '../utils/constants/app_colors.dart';
+import '../repositories/global_repo.dart';
+import '../utils/app_colors.dart';
 import 'cached_image_widget.dart';
 
 class CustomTrackItem extends StatelessWidget {
   final Track track;
-  final Widget trailingWidget;
 
-  const CustomTrackItem({Key? key, required this.track, required this.trailingWidget}) : super(key: key);
+  const CustomTrackItem({Key? key, required this.track}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => PlayScreen(track: track,)));
+        Navigator.of(context).pushNamed(AppRoutes.playScreen.name, arguments: {"track": track});
       },
       child: ListTile(
         contentPadding: EdgeInsets.zero,
-        leading: Container(
+        leading: SizedBox(
           width: 56,
           height: 56,
-          child: CachedImageWidget(imageURL: track.imageURL, border: 8,),
+          child: CachedImageWidget(imageURL: track.imageURL, border: 8, width: 56,),
         ),
         title: Text(
           track.name,
@@ -37,10 +38,10 @@ class CustomTrackItem extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle:  FutureBuilder(
-          future: GlobalRepo.getInstance.getArtistById(track.artistId),
+          future: GlobalRepo.getInstance.getArtistById(track.artistId ?? ""),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              var artist = snapshot.data!;
+              var artist = snapshot.data! as AppArtist;
               return Text(
                 artist.name,
                 style: TextStyle(
@@ -65,7 +66,11 @@ class CustomTrackItem extends StatelessWidget {
             }
           },
         ),
-        trailing: trailingWidget
+        trailing: const Icon(
+          FontAwesomeIcons.play,
+          color: AppColor.onPrimaryColor,
+          size: 16,
+        ),
       ),
     );
   }

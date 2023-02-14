@@ -1,8 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_app/repositories/global_repo.dart';
 
 import '../models/db_models/track.dart';
+import '../repositories/global_repo.dart';
 
 enum ButtonState {
   paused,
@@ -34,6 +36,8 @@ class PlayViewModel extends ChangeNotifier {
   Track? currentTrack;
   List<Track>? playlist;
   int currentIndex = 0;
+
+  List<Track>? previousTrack;
 
   AudioPlayer? _audioPlayer;
   ButtonState? playButton;
@@ -71,28 +75,14 @@ class PlayViewModel extends ChangeNotifier {
     _listenForChangesInPlayerPosition();
     _listenForChangesInBufferedPosition();
     _listenForChangesInTotalDuration();
-    print("CHECK");
+
     if (!isBeatLink) {
-      print("UPDATE");
       await globalRepo.updateListenCountTrack(track.id);
     }
   }
 
   void initPlaylist(List<Track> tracks) async {
     disposed();
-    // List<Track> tracks = [];
-    // List<AudioSource> sources = [];
-    // playlist.listTrackId.forEach((element) async {
-    //   var track = await TrackRepository().getTrackById(element);
-    //   print(element);
-    //   print(track.mp3Link);
-    //   tracks.add(track);
-    //   sources.add(AudioSource.uri(
-    //     Uri.parse(
-    //       track.mp3Link,
-    //     ),
-    //   ));
-    // });
 
     playlist = tracks;
     currentTrack = playlist![currentIndex];
@@ -202,6 +192,7 @@ class PlayViewModel extends ChangeNotifier {
     playButton = null;
     progressBar = null;
     currentTrack = null;
+    previousTrack = null;
     currentIndex = 0;
     playlist = null;
     // isPlayBeat = false;
@@ -211,8 +202,32 @@ class PlayViewModel extends ChangeNotifier {
     _audioPlayer?.seekToPrevious();
   }
 
+  void onPreviousRandomTrackPressed() async {
+    if (previousTrack != null && previousTrack!.isNotEmpty) {
+      var tmp = previousTrack;
+      init(previousTrack!.last);
+      tmp!.removeLast();
+      previousTrack = tmp;
+      notifyListeners();
+    }
+  }
+
   void onNextSongButtonPressed() {
     _audioPlayer?.seekToNext();
+  }
+
+  void onNextRandomTrackPressed() async {
+    var allTracks = await globalRepo.getAllTracks();
+    if (currentTrack != null) {
+      allTracks.removeWhere((element) => element.id == currentTrack!.id);
+    }
+    previousTrack ??= [];
+    previousTrack!.add(currentTrack!);
+    var tmp = previousTrack;
+    int random = Random().nextInt(allTracks.length);
+    init(allTracks[random]);
+    previousTrack = tmp;
+    notifyListeners();
   }
 
   Future<void> onShuffleButtonPressed() async {
@@ -244,5 +259,4 @@ class PlayViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

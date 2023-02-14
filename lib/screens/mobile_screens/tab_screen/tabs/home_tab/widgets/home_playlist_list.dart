@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/screens/mobile_screens/play/play_screen.dart';
-import 'package:music_app/screens/mobile_screens/playlist/playlist_screen.dart';
-import 'package:music_app/utils/constants/app_colors.dart';
+import 'package:music_app/utils/app_colors.dart';
 import 'package:music_app/view_models/playlist_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../navigations/app_nav_host.dart';
 import '../../../../../../widgets/cached_image_widget.dart';
 
 class HomePlaylistList extends StatelessWidget {
@@ -19,7 +18,7 @@ class HomePlaylistList extends StatelessWidget {
           SizedBox(
             width: 200,
             height: 200,
-            child: CachedImageWidget(imageURL: imageURL, border: 16,),
+            child: CachedImageWidget(imageURL: imageURL, border: 16, width: 200,),
           ),
           const SizedBox(
             height: 16.0,
@@ -62,7 +61,7 @@ class HomePlaylistList extends StatelessWidget {
               var playlist = playlists[index];
               return InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => PlaylistScreen(playlist: playlist)));
+                  Navigator.of(context).pushNamed(AppRoutes.playlistScreen.name, arguments: playlist);
                 },
                 child: _homePlaylistItem(playlist.imageURL!, playlist.name, "Playlist"),
               );

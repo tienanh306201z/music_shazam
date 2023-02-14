@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:music_app/repositories/global_repo.dart';
-import 'package:music_app/utils/constants/app_string.dart';
+import 'package:music_app/utils/app_string.dart';
+
+import '../repositories/global_repo.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final globalRepo = GlobalRepo.getInstance;
@@ -15,8 +16,7 @@ class ProfileViewModel extends ChangeNotifier {
   String? _extension;
   bool _multiPick = false;
 
-  void disposed() {
-    print("Dispose");
+  void reset() {
     isLoading = false;
     imageFile = null;
     _pathsImage = null;

@@ -1,4 +1,4 @@
-import 'package:music_app/utils/constants/app_string.dart';
+import 'package:music_app/utils/app_string.dart';
 
 class AppUser {
   late String id;

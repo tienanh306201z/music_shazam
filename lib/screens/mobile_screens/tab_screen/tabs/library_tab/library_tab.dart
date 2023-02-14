@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/screens/mobile_screens/profile/profile_screen.dart';
 import 'package:music_app/screens/mobile_screens/tab_screen/tabs/library_tab/widgets/library_header.dart';
-import 'package:music_app/utils/constants/asset_paths.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../models/db_models/track.dart';
 import '../../../../../repositories/global_repo.dart';
-import '../../../../../utils/constants/app_colors.dart';
+import '../../../../../utils/app_colors.dart';
+import '../../../../../utils/asset_paths.dart';
 import '../../../../../view_models/user_view_model.dart';
 import '../../../../../widgets/cached_image_widget.dart';
-import '../../../sign_in/sign_in_screen.dart';
+import '../../../liked_tracks_screen/liked_tracks_screen.dart';
+import '../../../my_playlist_screen/my_playlist_screen.dart';
+import '../../../profile_screen/profile_screen.dart';
+import '../../../sign_in_screen/sign_in_screen.dart';
 
 final globalRepo = GlobalRepo.getInstance;
 
@@ -68,24 +69,26 @@ class _LibraryTabState extends State<LibraryTab> {
                         }
                       },
                       child: Container(
-                        width: 40,
-                        height: 40,
+                        height: 40.0,
+                        width: 40.0,
                         alignment: Alignment.center,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: isNullImage
-                              ? Image.asset(
-                                  AssetPaths.imagePath.getDefaultImagePath,
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.cover,
-                                )
-                              : CachedImageWidget(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.blueGrey.shade200),
+                        child: isNullImage
+                            ? const Icon(
+                                Icons.person,
+                                size: 20.0,
+                                color: Colors.grey,
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(30),
+                                child: CachedImageWidget(
                                   imageURL: currUser.imageURL!,
                                   width: 40,
                                   height: 40,
                                 ),
-                        ),
+                              ),
                       ),
                     ),
                   ),
@@ -95,27 +98,44 @@ class _LibraryTabState extends State<LibraryTab> {
                 ),
                 functionItemWidget(
                   title: 'Liked tracks',
-                  onTap: () async {
+                  onTap: () {
                     if (model.currentUser != null) {
-                      var likedTracksId = model.currentUser!.likedTracksIdList;
-                      List<Track> tracks =
-                          await globalRepo.getTrackListById(likedTracksId);
-                      if (!mounted) return;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => LikedTracksScreen(
+                                    userId: model.currentUser!.id,
+                                  )));
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(
                       //         builder: (_) =>
                       //             LikedTrackedScreen(likedTracks: tracks)));
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const LikedTracksScreen()));
                     }
                   },
                 ),
                 functionItemWidget(
                   title: 'Playlists',
-                  onTap: () {},
-                ),
-                functionItemWidget(
-                  title: 'Your uploads',
-                  onTap: () {},
+                  onTap: () {
+                    if (model.currentUser != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => MyPlaylistScreen(
+                                    userId: model.currentUser!.id,
+                                  )));
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const LikedTracksScreen()));
+                    }
+                  },
                 ),
               ],
             ),

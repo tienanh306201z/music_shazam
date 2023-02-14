@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:music_app/utils/constants/app_string.dart';
+import 'package:music_app/utils/app_string.dart';
 
 class AppPlaylist {
   late String id;

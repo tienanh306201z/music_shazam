@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../utils/constants/app_colors.dart';
+import '../utils/app_colors.dart';
+import '../view_models/home_pager_view_model.dart';
 
 class CustomSearchBar extends StatefulWidget {
   final TextEditingController controller;
-  final Function(bool) onTextChange;
+  final Function(bool, String) onTextChange;
   final bool isReadOnly;
-  final Function onTap;
 
   const CustomSearchBar(
       {Key? key,
       required this.isReadOnly,
-      required this.onTap,
       required this.controller,
       required this.onTextChange})
       : super(key: key);
@@ -30,9 +30,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onTap: () => Provider.of<HomePagerViewModel>(context, listen: false).navigateToPage(1, context),
       controller: widget.controller,
       onChanged: (val) {
-        widget.onTextChange(val != "" ? true : false);
+        widget.onTextChange(val != "" ? true : false, val);
       },
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -48,7 +49,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         suffixIcon: widget.controller.text != ""
             ? GestureDetector(
                 onTap: () {
-                  widget.onTextChange.call(false);
+                  widget.onTextChange.call(false, "");
                   setState(() {
                     widget.controller.clear();
                   });
@@ -60,7 +61,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       ),
       style: const TextStyle(color: AppColor.onSurfaceColor),
       readOnly: widget.isReadOnly,
-      onTap: widget.onTap.call(),
     );
   }
 }

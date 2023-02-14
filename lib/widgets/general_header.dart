@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/utils/constants/app_colors.dart';
+import 'package:music_app/utils/app_colors.dart';
 
 class GeneralHeader extends StatelessWidget {
   final String title;
-  const GeneralHeader({Key? key, required this.title}) : super(key: key);
+  final Function? onTap;
+  const GeneralHeader({Key? key, required this.title, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +12,7 @@ class GeneralHeader extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: InkWell(
         onTap: () {
+          onTap?.call();
           Navigator.pop(context);
         },
         child: const Icon(Icons.arrow_back_outlined, color: AppColor.onPrimaryColor,),
@@ -23,14 +25,6 @@ class GeneralHeader extends StatelessWidget {
             fontWeight: FontWeight.w700,
             height: 32.0 / 24.0),
       ),
-      // subtitle: Text(
-      //   "Feel free to edit to your liking",
-      //   style: TextStyle(
-      //       color: AppColor.onPrimaryColor.withOpacity(0.6),
-      //       fontSize: 14.0,
-      //       fontWeight: FontWeight.w600,
-      //       height: 19.0 / 14.0),
-      // ),
     );
   }
 }

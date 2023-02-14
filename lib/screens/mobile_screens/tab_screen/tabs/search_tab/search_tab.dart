@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:music_app/models/db_models/playlist.dart';
+import 'package:music_app/models/db_models/track.dart';
 import 'package:music_app/screens/mobile_screens/tab_screen/tabs/search_tab/widgets/search_header.dart';
-import 'package:music_app/utils/constants/app_colors.dart';
+import 'package:music_app/utils/app_colors.dart';
+import 'package:music_app/view_models/playlist_view_model.dart';
+import 'package:music_app/view_models/track_view_model.dart';
+import 'package:music_app/widgets/custom_playlist_item.dart';
 import 'package:music_app/widgets/custom_search_bar.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../widgets/custom_track_item.dart';
 
@@ -17,15 +23,18 @@ class _SearchTabState extends State<SearchTab> {
   final _controller = TextEditingController(text: "");
 
   final _listRecommendation = [
-    "love me like you do",
-    "perfect",
-    "can't take my eyes off of you",
-    "you're beautiful",
-    "biet iu 1 nguoi",
-    "anh khong the gi dau anh lam"
+    "waiting",
+    "đi về nhà",
+    "đã lỡ yêu em nhiều",
+    "âm thầm bên em",
+    "suýt nữa thì",
+    "đứa nào làm em buồn"
   ];
 
   var _containText = false;
+
+  var tracks = <Track>[];
+  var playLists = <AppPlaylist>[];
 
   Widget _recommendationSection() {
     return Column(
@@ -48,6 +57,12 @@ class _SearchTabState extends State<SearchTab> {
                         setState(() {
                           _controller.text = e;
                           _containText = true;
+                          tracks = Provider.of<TrackViewModel>(context,
+                                  listen: false)
+                              .getSearchedTracks(_controller.text);
+                          playLists = Provider.of<PlaylistViewModel>(context,
+                                  listen: false)
+                              .getSearchedPlaylists(_controller.text);
                         });
                       },
                       label: Text(
@@ -67,45 +82,36 @@ class _SearchTabState extends State<SearchTab> {
     );
   }
 
-  Widget _searchListSection() {
-    return SizedBox();
-    // return ListView.separated(
-    //   itemBuilder: (_, index) => CustomTrackItem(
-    //       trailingWidget: PopupMenuButton(
-    //     offset: const Offset(0, 50),
-    //     padding: EdgeInsets.zero,
-    //     icon: Icon(
-    //       Icons.more_vert,
-    //       color: AppColor.onPrimaryColor.withOpacity(0.6),
-    //       size: 28,
-    //     ),
-    //     itemBuilder: (ctx) => [
-    //       PopupMenuItem(
-    //         child: Row(
-    //           children: const [
-    //             Icon(
-    //               Icons.key_rounded,
-    //               color: Colors.grey,
-    //             ),
-    //             SizedBox(
-    //               width: 10.0,
-    //             ),
-    //             Text(
-    //               "Change Password",
-    //               style: TextStyle(color: Colors.grey),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ],
-    //   )),
-    //   itemCount: 10,
-    //   separatorBuilder: (_, index) => const SizedBox(
-    //     height: 16.0,
-    //   ),
-    //   shrinkWrap: true,
-    //   physics: const NeverScrollableScrollPhysics(),
-    // );
+  Widget _searchTrackListSection() {
+    return tracks.isEmpty
+        ? const SizedBox()
+        : ListView.separated(
+            itemBuilder: (_, index) => CustomTrackItem(
+              track: tracks[index],
+            ),
+            itemCount: tracks.length,
+            separatorBuilder: (_, index) => const SizedBox(
+              height: 16.0,
+            ),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+          );
+  }
+
+  Widget _searchPlaylistSection() {
+    return tracks.isEmpty
+        ? const SizedBox()
+        : ListView.separated(
+            itemBuilder: (_, index) => CustomPlaylistItem(
+              playlist: playLists[index],
+            ),
+            itemCount: playLists.length,
+            separatorBuilder: (_, index) => const SizedBox(
+              height: 16.0,
+            ),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+          );
   }
 
   @override
@@ -121,19 +127,24 @@ class _SearchTabState extends State<SearchTab> {
               height: 16.0,
             ),
             CustomSearchBar(
-              onTextChange: (containText) {
+              onTextChange: (containText, text) {
                 setState(() {
                   _containText = containText;
+                  tracks = Provider.of<TrackViewModel>(context, listen: false)
+                      .getSearchedTracks(text);
+                  playLists =
+                      Provider.of<PlaylistViewModel>(context, listen: false)
+                          .getSearchedPlaylists(text);
                 });
               },
               controller: _controller,
               isReadOnly: false,
-              onTap: () {},
             ),
             const SizedBox(
               height: 24.0,
             ),
-            _containText ? _searchListSection() : _recommendationSection()
+            _containText ? _searchTrackListSection() : _recommendationSection(),
+            _containText ? _searchPlaylistSection() : const SizedBox()
           ],
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/utils/constants/app_colors.dart';
+import 'package:music_app/utils/app_colors.dart';
 
 class LibraryHeader extends StatelessWidget {
   final Widget userImageWidget;

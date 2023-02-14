@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../utils/constants/app_string.dart';
+import '../../utils/app_string.dart';
 
 class Track {
   late String id;
@@ -8,11 +8,11 @@ class Track {
   late String musicLink;
   String? beatLink;
   String? karaokeLink;
-  late String lyrics;
-  late String chordString;
+  String? lyrics;
+  String? chordString;
   String? description;
   late int listenedCount;
-  late String artistId;
+  String? artistId;
   late List<dynamic> favoriteUserIdList;
   late Timestamp lastUpdate;
   late String imageURL;
@@ -23,11 +23,11 @@ class Track {
     required this.musicLink,
     this.beatLink,
     this.karaokeLink,
-    required this.lyrics,
-    required this.chordString,
+    this.lyrics,
+    this.chordString,
     this.description,
     required this.listenedCount,
-    required this.artistId,
+    this.artistId,
     required this.favoriteUserIdList,
     required this.lastUpdate,
     required this.imageURL,
@@ -46,7 +46,7 @@ class Track {
     artistId = map[AppString.artistId] ?? "";
     favoriteUserIdList = map[AppString.favoriteUserIdList] ?? [];
     lastUpdate = map[AppString.lastUpdate];
-    imageURL = map[AppString.imageURL] ?? "";
+    imageURL = map[AppString.imageURL];
   }
 
   Map<String, dynamic> toMap() {

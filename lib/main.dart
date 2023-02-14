@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:music_app/screens/mobile_screens/tab_screen/tab_screen.dart';
+import 'package:music_app/navigations/app_nav_host.dart';
+import 'package:music_app/view_models/detected_song_view_model.dart';
+import 'package:music_app/view_models/home_pager_view_model.dart';
 import 'package:music_app/view_models/playlist_view_model.dart';
 import 'package:music_app/view_models/profile_view_model.dart';
 import 'package:music_app/view_models/track_view_model.dart';
 import 'package:music_app/view_models/user_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:oktoast/oktoast.dart';
 
 import 'view_models/play_view_model.dart';
 import 'view_models/upload_view_model.dart';
@@ -30,13 +33,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProfileViewModel()),
         ChangeNotifierProvider(create: (_) => PlaylistViewModel()),
         ChangeNotifierProvider(create: (_) => TrackViewModel()),
+        ChangeNotifierProvider(create: (_) => DetectedSongViewModel()),
+        ChangeNotifierProvider(create: (_) => HomePagerViewModel()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Muzikal',
-        theme: ThemeData.light().copyWith(
-            useMaterial3: true, textTheme: GoogleFonts.montserratTextTheme()),
-        home: const TabScreen(),
+      child: OKToast(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Muzikal',
+          theme: ThemeData.light().copyWith(
+              useMaterial3: true, textTheme: GoogleFonts.montserratTextTheme()),
+          routes: AppNavHost.routes,
+          initialRoute: AppRoutes.splashScreen.name,
+        ),
       ),
     );
   }

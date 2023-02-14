@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:music_app/models/in_app_models/nav_bar_model.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../view_models/home_pager_view_model.dart';
 
 class TabNavBar extends StatefulWidget {
-  final PageController pageController;
-
-  const TabNavBar({Key? key, required this.pageController}) : super(key: key);
+  const TabNavBar({Key? key}) : super(key: key);
 
   @override
   State<TabNavBar> createState() => _TabNavBarState();
@@ -24,6 +25,7 @@ class _TabNavBarState extends State<TabNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final pagerViewModel = Provider.of<HomePagerViewModel>(context);
     return BottomNavigationBar(
       items: _listItem
           .map((e) => BottomNavigationBarItem(
@@ -41,8 +43,7 @@ class _TabNavBarState extends State<TabNavBar> {
         setState(() {
           currentIndex = i;
         });
-        widget.pageController.animateToPage(i,
-            duration: const Duration(milliseconds: 400), curve: Curves.linear);
+        pagerViewModel.navigateToPage(i, context);
       },
     );
   }

@@ -1,19 +1,19 @@
-import 'package:music_app/utils/constants/app_string.dart';
+import 'package:music_app/utils/app_string.dart';
 
-class Artist {
+class AppArtist {
   late String id;
   late String name;
   late String? biography;
   late String? description;
   late List<dynamic> tracksIdList;
 
-  Artist({
+  AppArtist({
     required this.id,
     required this.name,
     this.tracksIdList = const [],
   });
 
-  Artist.fromMap(Map<String, dynamic> map) {
+  AppArtist.fromMap(Map<String, dynamic> map) {
     id = map[AppString.id];
     name = map[AppString.name];
     biography = map[AppString.biography];

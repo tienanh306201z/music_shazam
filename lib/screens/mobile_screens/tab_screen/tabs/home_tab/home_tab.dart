@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/screens/mobile_screens/tab_screen/tabs/home_tab/widgets/home_header.dart';
 import 'package:music_app/screens/mobile_screens/tab_screen/tabs/home_tab/widgets/home_playlist_list.dart';
-import 'package:music_app/utils/constants/app_colors.dart';
+import 'package:music_app/utils/app_colors.dart';
 import 'package:music_app/view_models/track_view_model.dart';
 import 'package:music_app/widgets/custom_track_item.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +13,7 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -30,9 +31,8 @@ class HomeTab extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: CustomSearchBar(
                 controller: TextEditingController(),
-                onTextChange: (val) {},
+                onTextChange: (val, text) {},
                 isReadOnly: true,
-                onTap: () {},
               ),
             ),
             const SizedBox(
@@ -74,16 +74,12 @@ class HomeTab extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Consumer<TrackViewModel>(
                 builder: (context, model, child) {
-                  var tracks = model.tracks;
+                  var tracks = model.top10Tracks;
+                  print(tracks);
                   return ListView.separated(
-                    itemBuilder: (_, index) => CustomTrackItem(track: tracks[index], trailingWidget: Text(
-                      "3:30",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        height: 21.0 / 16.0,
-                        color: AppColor.onPrimaryColor,
-                      ),
-                    ),),
+                    itemBuilder: (_, index) => CustomTrackItem(
+                      track: tracks[index],
+                    ),
                     itemCount: tracks.length,
                     separatorBuilder: (_, index) => const SizedBox(
                       height: 16.0,
